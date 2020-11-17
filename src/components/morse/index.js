@@ -1,6 +1,7 @@
 import React from "react"
 import morse from "./alphabet.json"
-// let morse = require('./alphabet.json');
+import {MorseSettings} from "../settings"
+
 export class Morse extends React.Component {
 
     constructor(props) {
@@ -11,6 +12,9 @@ export class Morse extends React.Component {
             tap: null, 
             tapN: 0,
             tapDurations: [],
+            morseCode: [],
+            lastDuration: null,
+            lastSymbol: null,
             averageTap: 0
         };
       }
@@ -27,31 +31,57 @@ export class Morse extends React.Component {
         });
 
         document.body.addEventListener('keyup', (event) => {
-            const newDurations = [...this.state.tapDurations, event.timeStamp - this.state.tapStart]
+            const newDuration = (event.timeStamp - this.state.tapStart) / 1000
+
+            const newDurations = [...this.state.tapDurations, newDuration]
             let avg = newDurations.reduce((a, b) => a + b) / newDurations.length
+            const newCode = 
+                newDuration <= this.state.dotTime ? 
+                "*" : 
+                newDuration <= this.state.dotTime * 3.5 ?
+                "-" : 
+                null
+            const newMorseCode = [...this.state.morseCode, newCode]
             console.log(avg)
             this.setState({
                 tap: null, 
                 tapStart: null,
                 tapN: this.state.tapN + 1,
                 tapDurations: newDurations,
+                lastDuration: newDuration,
+                lastSymbol: newCode,
+                morseCode: newMorseCode,
                 averageTap: avg
             })
         });
+    }
 
+    changeSettings = (obj) => {
+        this.setState({...obj})
     }
 
     render() {
         let {tapDurations, code, ...rest} = this.state
         return (
         <div>
-            This is the class Morse!!
+            <MorseSettings settings={this.state.settings} changeSettings={this.changeSettings}/>
+            <h4>
+                Selected Dot Time: 
+                {this.state.level}: {this.state.dotTime}
+            </h4>
+            <h4>
+                Selected Dash Time: 
+                {this.state.level}: {this.state.dotTime * 3}
+            </h4>
+            <h4>Last Duration: {this.state.lastDuration}</h4>
+            <h4>Last Symbol:   {this.state.lastSymbol}</h4>
+            <h4>
+                Average: 
+                {tapDurations.reduce((a, b) => a + b, 0)/tapDurations.length/1000}
+            </h4>
             <div>
                 your state: {JSON.stringify(rest)}
                 <br/>
-                lists: {JSON.stringify(tapDurations)}
-                <br/>
-                lists: {JSON.stringify(code)}
                 <br/>
                 Morse: {JSON.stringify(morse)}
             </div>

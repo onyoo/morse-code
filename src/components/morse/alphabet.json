@@ -1,4 +1,31 @@
 {
+    "units":[
+        {
+            "name":"Dit", 
+            "time": 1, 
+            "explanation":""
+        },
+        {
+            "name":"Dah", 
+            "time": 3, 
+            "explanation":""
+        },
+        {
+            "name":"Intra-character space", 
+            "time": 1, 
+            "explanation":"the gap between dits and dahs within a character"
+        },
+        {
+            "name":"Inter-character space", 
+            "time": 3, 
+            "explanation":"the gap between the characters of a word"
+        },
+        {
+            "name":"Word space", 
+            "time": 7, 
+            "explanation":"the gap between two words"
+        }
+    ],
 "morse":{
     "A":"*-",
     "B":"-***",
