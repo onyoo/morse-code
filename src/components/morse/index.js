@@ -9,7 +9,8 @@ export class Morse extends React.Component {
         this.state = {
             code: [], 
             tapStart: null, 
-            tap: null, 
+            tapLastEnd: null,
+            key: null, 
             tapN: 0,
             tapDurations: [],
             morseCode: [],
@@ -21,10 +22,16 @@ export class Morse extends React.Component {
 
     componentDidMount = (props) => {
         document.body.addEventListener('keydown', (event) => {
-            if (this.state.tap !== event.key) {
+            if (this.state.key !== event.key && this.state.tapLastEnd !== null) {
+                let elapsedTime = Math.floor((event.timeStamp - this.state.tapLastEnd) / 10 * this.state.dotTime)
+                let newCode = new Array(Math.floor(elapsedTime)).fill("=")
+                console.log(elapsedTime, newCode)
+                const newMorseCode = [...this.state.morseCode, ...newCode]
                 this.setState({
-                    tap: event.key, 
+                    key: event.key, 
                     code: [...this.state.code, event.key], 
+                    morseCode: newMorseCode,
+                    tapLastEnd: null,
                     tapStart: event.timeStamp
                 })
             }
@@ -42,10 +49,10 @@ export class Morse extends React.Component {
                 "-" : 
                 null
             const newMorseCode = [...this.state.morseCode, newCode]
-            console.log(avg)
             this.setState({
-                tap: null, 
+                key: null, 
                 tapStart: null,
+                tapLastEnd: event.timeStamp,
                 tapN: this.state.tapN + 1,
                 tapDurations: newDurations,
                 lastDuration: newDuration,
@@ -61,10 +68,15 @@ export class Morse extends React.Component {
     }
 
     render() {
-        let {tapDurations, code, ...rest} = this.state
+
+let {tapDurations, code, morseCode, ...rest} = this.state
         return (
         <div>
             <MorseSettings settings={this.state.settings} changeSettings={this.changeSettings}/>
+            <div id="morse-display">
+                {morseCode.join("")}
+            </div>
+                {morseCode}
             <h4>
                 Selected Dot Time: 
                 {this.state.level}: {this.state.dotTime}
