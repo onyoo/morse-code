@@ -24,5 +24,6 @@
 
 #morse-display {
   border: 1px solid grey;
-  border-radius: 1em;;
+  border-radius: 1em;
+  min-height: 2em;
 }

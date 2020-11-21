@@ -22,10 +22,14 @@ export class Morse extends React.Component {
 
     componentDidMount = (props) => {
         document.body.addEventListener('keydown', (event) => {
-            if (this.state.key !== event.key && this.state.tapLastEnd !== null) {
+            if (event.key === "Escape") {
+                this.setState({
+                    reading: !this.state.reading,
+                })
+            } else if (this.state.key !== event.key && this.state.reading) {
                 let elapsedTime = Math.floor((event.timeStamp - this.state.tapLastEnd) / 10 * this.state.dotTime)
-                let newCode = new Array(Math.floor(elapsedTime)).fill("=")
-                console.log(elapsedTime, newCode)
+                let newCode = new Array(Math.floor(elapsedTime)).fill(" ")
+                // console.log(elapsedTime, newCode)
                 const newMorseCode = [...this.state.morseCode, ...newCode]
                 this.setState({
                     key: event.key, 
@@ -38,28 +42,29 @@ export class Morse extends React.Component {
         });
 
         document.body.addEventListener('keyup', (event) => {
-            const newDuration = (event.timeStamp - this.state.tapStart) / 1000
+            if (this.state.reading) {
+                const newDuration = (event.timeStamp - this.state.tapStart) / 1000
 
-            const newDurations = [...this.state.tapDurations, newDuration]
-            let avg = newDurations.reduce((a, b) => a + b) / newDurations.length
-            const newCode = 
-                newDuration <= this.state.dotTime ? 
-                "*" : 
-                newDuration <= this.state.dotTime * 3.5 ?
-                "-" : 
-                null
-            const newMorseCode = [...this.state.morseCode, newCode]
-            this.setState({
-                key: null, 
-                tapStart: null,
-                tapLastEnd: event.timeStamp,
-                tapN: this.state.tapN + 1,
-                tapDurations: newDurations,
-                lastDuration: newDuration,
-                lastSymbol: newCode,
-                morseCode: newMorseCode,
-                averageTap: avg
-            })
+                const newDurations = [...this.state.tapDurations, newDuration]
+                let avg = newDurations.reduce((a, b) => a + b) / newDurations.length
+                const newCode = 
+                    newDuration <= this.state.dotTime ? 
+                    "*" : 
+                    newDuration <= this.state.dotTime * 3.5 ?
+                    "-" : 
+                    null
+                const newMorseCode = [...this.state.morseCode, newCode]
+                this.setState({
+                    key: null, 
+                    tapStart: null,
+                    tapLastEnd: event.timeStamp,
+                    tapDurations: newDurations,
+                    lastDuration: newDuration,
+                    lastSymbol: newCode,
+                    morseCode: newMorseCode,
+                    averageTap: avg
+                })
+            }
         });
     }
 
@@ -69,12 +74,17 @@ export class Morse extends React.Component {
 
     render() {
 
-let {tapDurations, code, morseCode, ...rest} = this.state
+        let {tapDurations, code, morseCode, ...rest} = this.state
+
+        let translation = morseCode.join("").split(" ").filter(str => str.length > 0).map(str => {
+            return morse.morse[str]
+        })
+        console.log(translation)
         return (
         <div>
             <MorseSettings settings={this.state.settings} changeSettings={this.changeSettings}/>
             <div id="morse-display">
-                {morseCode.join("")}
+                {translation}
             </div>
                 {morseCode}
             <h4>
