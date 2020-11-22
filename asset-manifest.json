@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "/morse-code/static/css/main.cff1e319.chunk.css",
-    "main.js": "/morse-code/static/js/main.49e85687.chunk.js",
-    "main.js.map": "/morse-code/static/js/main.49e85687.chunk.js.map",
+    "main.css": "/morse-code/static/css/main.709176fa.chunk.css",
+    "main.js": "/morse-code/static/js/main.0fa534cf.chunk.js",
+    "main.js.map": "/morse-code/static/js/main.0fa534cf.chunk.js.map",
     "runtime-main.js": "/morse-code/static/js/runtime-main.e28f9a81.js",
     "runtime-main.js.map": "/morse-code/static/js/runtime-main.e28f9a81.js.map",
     "static/js/2.87fe1eca.chunk.js": "/morse-code/static/js/2.87fe1eca.chunk.js",
@@ -10,13 +10,13 @@
     "static/js/3.75fef9d7.chunk.js": "/morse-code/static/js/3.75fef9d7.chunk.js",
     "static/js/3.75fef9d7.chunk.js.map": "/morse-code/static/js/3.75fef9d7.chunk.js.map",
     "index.html": "/morse-code/index.html",
-    "static/css/main.cff1e319.chunk.css.map": "/morse-code/static/css/main.cff1e319.chunk.css.map",
+    "static/css/main.709176fa.chunk.css.map": "/morse-code/static/css/main.709176fa.chunk.css.map",
     "static/js/2.87fe1eca.chunk.js.LICENSE.txt": "/morse-code/static/js/2.87fe1eca.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e28f9a81.js",
     "static/js/2.87fe1eca.chunk.js",
-    "static/css/main.cff1e319.chunk.css",
-    "static/js/main.49e85687.chunk.js"
+    "static/css/main.709176fa.chunk.css",
+    "static/js/main.0fa534cf.chunk.js"
   ]
 }
