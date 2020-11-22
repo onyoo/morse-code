@@ -41,14 +41,14 @@ export class Morse extends React.Component {
 
     onOff = () => {
         let newMorseCode = [...this.state.morseCode]
-        let command = !this.state.reading ? " Start" : " Stop"
-        if (this.state.reading) newMorseCode.push(command)
+        // // let command = !this.state.reading ? " Start" : " Stop"
+        // if (this.state.reading) newMorseCode.push(command)
         this.setState({reading: !this.state.reading, morseCode: newMorseCode})
     }
 
     stopListening = () => {
         let newMorseCode = [...this.state.morseCode]
-        if (this.state.reading) newMorseCode.push(" Stop")
+        // if (this.state.reading) newMorseCode.push(" Stop")
         this.setState({
             reading: false,
             tapStart: null, 
@@ -61,7 +61,8 @@ export class Morse extends React.Component {
         let newCode = []
         if (this.state.tapLastEnd) {
             let noKeyTime = Math.round((event.timeStamp - this.state.tapLastEnd) / 1000 * this.state.dotTime)
-            newCode = new Array(Math.floor(noKeyTime)).fill(" ")
+            // newCode = new Array(Math.floor(noKeyTime)).fill("   ")
+            newCode = noKeyTime <= 1 ? [" "] : noKeyTime <= 3 ? ["   "] :["       "]
         }
         let newMorseCode = [...this.state.morseCode, ...newCode]
         this.setState({
@@ -82,7 +83,7 @@ export class Morse extends React.Component {
                 "*" : 
                 newDuration <= this.state.dotTime * 3.5 ?
                 "-" : 
-                " *Error!*"
+                ""
             const newMorseCode = [...this.state.morseCode, newCode]
             this.setState({
                 key: null, 
@@ -119,10 +120,24 @@ export class Morse extends React.Component {
     render() {
         let {tapDurations, morseCode, ...rest} = this.state
 
-        let translation = morseCode.join("").split(" ").filter(str => str.length > 0).map(str => {
-            return morse.morse[str]
+    const parsedLetters = morseCode.reduce((acc, curr) => { 
+        console.log(acc, curr)
+        if (curr === " ") {
+            return [...acc]
+        } else if (curr === "   " || curr === "       ") {
+            return [...acc, curr]
+        } else {
+            let lastChar = acc[acc.length-1] ? acc[acc.length-1] : ""
+            let newValue = lastChar === "   " || lastChar === "       " ? [lastChar, curr] : [lastChar+curr]
+
+            return [...acc.slice(0,acc.length-1), ...newValue ]
+        } },[])
+
+        let translation = parsedLetters.map(str => {
+            return (str in morse.morse) ? morse.morse[str] : str !== "   " ? str : ""
         })
-        console.log(morseCode)
+
+
         return (
         <div>
             <MorseSettings dotTime={this.state.dotTime} changeSettings={this.changeSettings}/>
