@@ -1,6 +1,6 @@
 {
   "name": "morse-code",
-  "homepage": "https://onyoo.github.io/morse-code"
+  "homepage": "https://onyoo.github.io/morse-code",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
